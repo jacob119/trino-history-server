@@ -1,6 +1,7 @@
 package io.trino.historyserver.controller;
 
 import io.trino.historyserver.exception.InvalidQueryEventException;
+import io.trino.historyserver.exception.QueryException;
 import io.trino.historyserver.exception.QueryFetchException;
 import io.trino.historyserver.exception.QueryStorageException;
 import io.trino.historyserver.exception.StorageInitializationException;
@@ -43,6 +44,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleStorageInitError(StorageInitializationException e) {
         log.error("event=init_storage_failed type=server_error message=\"{}\"", e.getMessage(), e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error initializing storage: " + e.getMessage());
+    }
+
+    @ExceptionHandler(QueryException.class)
+    public ResponseEntity<String> handleQueryError(QueryException e) {
+        log.error("event=query_error type=server_error queryId={} message=\"{}\"", e.getQueryId(), e.getMessage(), e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Query operation failed: " + e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

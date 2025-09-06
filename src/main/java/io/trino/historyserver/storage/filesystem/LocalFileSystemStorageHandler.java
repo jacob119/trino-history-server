@@ -28,7 +28,7 @@ public class LocalFileSystemStorageHandler
     private final FileSystemStorageHandlerProperties props;
 
     @PostConstruct
-    private void ensureDirectoryExists()
+    public void ensureDirectoryExists()
     {
         String queryDir = props.getQueryDir();
 

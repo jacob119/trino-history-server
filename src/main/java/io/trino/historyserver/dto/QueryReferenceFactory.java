@@ -43,7 +43,7 @@ public class QueryReferenceFactory
     private String extractCoordinatorUrl(HttpServletRequest request)
     {
         String url = request.getHeader(COORDINATOR_CUSTOM_HEADER);
-        if (url == null) {
+        if (url == null || url.trim().isEmpty()) {
             throw new InvalidQueryEventException(
                     String.format("Missing %s header", COORDINATOR_CUSTOM_HEADER)
             );
